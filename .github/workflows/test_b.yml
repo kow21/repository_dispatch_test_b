@@ -1,0 +1,12 @@
+name: remote test__push listener
+
+on: [repository_dispatch]
+
+jobs:
+  signals2:
+    runs-on:  ubuntu-latest
+    steps:
+      - name: receive
+        if: github.event.action == 'send_message'
+        run: |
+          echo "hello world"
