@@ -1,6 +1,8 @@
 name: remote test__push listener
 
-on: [repository_dispatch]
+on: 
+  push:
+  repository_dispatch:
 
 jobs:
   signals2:
