@@ -3,16 +3,17 @@ name: remote test__push listener
 on: 
   push:
   repository_dispatch:
+    types: [test_trigger]
 
 jobs:
   signals2:
     runs-on:  ubuntu-latest
     steps:
       - name: receive repository_dispatch
-        if: github.event.action == 'send_message'
+        if: github.event.action == 'test_trigger'
         run: |
           echo "repository_dispatch"
       - name: push
-        if: github.event.action != 'send_message'
+        if: github.event.action != 'test_trigger'
         run: |
           echo "push"
