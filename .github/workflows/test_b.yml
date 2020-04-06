@@ -1,19 +1,18 @@
 name: remote test__push listener
 
-on: 
-  push:
-  repository_dispatch:
-    types: [test_trigger]
+on: [repository_dispatch]
 
 jobs:
-  signals2:
-    runs-on:  ubuntu-latest
+  ping-pong:
+    runs-on: ubuntu-latest
     steps:
-      - name: receive repository_dispatch
-        if: github.event.action == 'test_trigger'
+      - name: Event Information
         run: |
-          echo "repository_dispatch"
-      - name: push
-        if: github.event.action != 'test_trigger'
+          echo "Event '${{ github.event.action }}' received from '${{ github.event.client_payload.repository }}'"
+      - name: PONG - Dispatch response to received PING
+        if: github.event.action == 'ping'
         run: |
-          echo "push"
+          curl -X POST https://api.github.com/repos/kow21/repository_dispatch_test_a /dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ secrets.ACCESS_TOKEN }} \
+          --data '{"event_type": "pong", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
