@@ -13,7 +13,7 @@ jobs:
         run: |
           echo "helloworld"
       - name: PONG - Dispatch response to received PING
-        if: github.event.action == 'ping'
+        if: github.event.action == 'send_message'
         run: |
           curl -X POST https://api.github.com/repos/kow21/repository_dispatch_test_a /dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
